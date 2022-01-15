@@ -9,5 +9,5 @@ RUN cp microservice-go /
 FROM ubuntu
 WORKDIR /microservice-go
 COPY --from=builder ./microservice-go .
-
+EXPOSE 8118
 CMD ./microservice-go

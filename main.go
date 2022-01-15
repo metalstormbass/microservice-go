@@ -25,6 +25,5 @@ func main() {
 
 	app.SetupRouter()
 	
-
 	log.Fatal(http.ListenAndServe(":8118", app.Router))
 }
