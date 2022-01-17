@@ -1,19 +1,20 @@
 package app
 
 import (
-	"database/sql"
-	"encoding/json"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type App struct {
 	Router *mux.Router
-	Database *sql.DB
+	Database *mongo.Client
 }
 
+
+// Setup Router
 func (app *App) SetupRouter() {
 	app.Router.
 		Methods("GET").
@@ -28,35 +29,16 @@ func (app *App) SetupRouter() {
 
 // GET function
 func (app *App) getFunction(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	//vars := mux.Vars(r)
 	
-	id, ok := vars["id"]
-	if !ok {
-		log.Fatal("FATALITY - ID not found in path")
-	}
-	
-	dbdata := &DbData{}
-	err := app.Database.QueryRow("SELECT id, fate, name FROM 'goofytable' where id = ?", id).Scan(&dbdata.ID, &dbdata.Date, &dbdata.Name)
-	if err != nil {
-		log.Fatal("FATALITY - SELECT failed")
-	}
-
 	log.Println("You reached into that database and ripped out a thing")
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(dbdata); err != nil {
-		panic(err)
-	}
 
 }
 
 
 // POST function
 func (app *App) postFunction(w http.ResponseWriter, r *http.Request) {
-	_, err := app.Database.Exec("INSERT INTO 'goofytable' (name) VALUES ('myname')")
-	if err != nil {
-		log.Fatal("An attempt was made... to INSERT")
-	}
-
 	log.Println("You called a thinggggggg")
 	w.WriteHeader(http.StatusOK)
 }

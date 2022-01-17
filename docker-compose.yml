@@ -1,0 +1,14 @@
+version: '2'
+services:
+  go-microservice: 
+    image: michaelbraunbass/go-microservice  
+    ports:
+      - "8118:8118"
+    links:
+      - goofydbservice
+    depends_on:
+      - goofydbservice
+  goofydbservice:
+    image: mongo
+    ports:
+      - "27017:27017"
